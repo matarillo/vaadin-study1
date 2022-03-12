@@ -1,13 +1,11 @@
 package matarillo.example.ui;
 
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.RouterLink;
@@ -30,22 +28,18 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
         asyncInMemoryDTO = new RouterLink("Asynchronous DTO", AsyncInMemoryDTOView.class);
         lazyDTO = new RouterLink("Lazy DTO", LazyDTOView.class);
 
-        final UnorderedList list = new UnorderedList(
-                new ListItem(home),
-                new ListItem(inMemoryDTO),
-                new ListItem(inMemoryJSON),
-                new ListItem(asyncInMemoryDTO),
-                new ListItem(lazyDTO));
-
-        final Nav navigation = new Nav(list);
-        addToDrawer(navigation);
-        setPrimarySection(Section.DRAWER);
-        setDrawerOpened(false);
+        final Tabs tabs = new Tabs(
+                new Tab(home),
+                new Tab(inMemoryDTO),
+                new Tab(inMemoryJSON),
+                new Tab(asyncInMemoryDTO),
+                new Tab(lazyDTO));
 
         // Header
         pageTitle = new H1("Home");
-        final Header header = new Header(new DrawerToggle(), pageTitle);
-        addToNavbar(header);
+        final Header header = new Header(pageTitle);
+        header.getStyle().set("min-width", "12rem").set("padding", "1rem");
+        addToNavbar(header, tabs);
     }
 
     private RouterLink[] getRouterLinks() {
